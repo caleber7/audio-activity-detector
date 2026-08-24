@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Audio Activity Detector"
+description = "A local-first desktop-style tool that analyzes a video's audio track and pinpoints time spans with unusually high audio activity, then lets users review and export the detected timestamps."
+version = "1.0.0"
+id = "artifacts/audio-activity-detector"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18524
+
+[services.development]
+run = "pnpm --filter @workspace/audio-activity-detector run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/audio-activity-detector", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/audio-activity-detector/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18524"
+BASE_PATH = "/"
